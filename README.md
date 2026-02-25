@@ -39,7 +39,7 @@ High-resolution GUI grounding is an extreme important task for professional work
 | Holo2-8B                    | 58.9  | 93.2  | 70.1   | -     | -     |
 | Step-GUI-8B                 | 62.6  | 95.1  | 70.0   | -     | -     |
 | MAI-UI-8B                   | 65.8  | 95.2  | 60.1   | 68.6  | 40.7  |
-| **KV-Ground-4B-BaseQw3vl*** | 63.2  | 94.8  | 58.2   | 64.5  | 32.6  |
+| **KV-Ground-4B-BaseQw3vl*** | 63.2  | 94.6  | 58.2   | 64.5  | 32.6  |
 
 > Notes:
 >  - By default numbers are copied from each source
