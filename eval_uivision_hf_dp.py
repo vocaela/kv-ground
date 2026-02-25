@@ -51,7 +51,7 @@ def main():
     # inference params
     parser.add_argument('--num_return_sequences', type=int, default=None, help='Number of sequences to return for each input example. If >1, will use the aggregation method specified in get_predict to aggregate the multiple predictions into one coordinate for evaluation. If None, will return a single sequence.')
     parser.add_argument("--max_new_tokens", type=int, default=512, help="Maximum number of new tokens to generate")
-    parser.add_argument('--temperature', type=float, default=None, help='Temperature for sampling. Set to 0.0 for greedy decoding.')
+    parser.add_argument('--temperature', type=float, default=0, help='Temperature for sampling. Set to 0.0 for greedy decoding.')
     parser.add_argument('--top_p', type=float, default=None, help='Top-p sampling parameter. Set to 1.0 to disable.')
     parser.add_argument('--top_k', type=int, default=None, help='Top-k sampling parameter. Set to 0 to disable.')
     
