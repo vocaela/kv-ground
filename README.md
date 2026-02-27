@@ -1,11 +1,12 @@
 <h1 align="center">
-   KV-Ground-4B: Small GUI Grounding Model for High-Resolution Images
+   KV-Ground-4B: Small GUI Grounding Models for High-Resolution Images
 </h1>
 
 
 <p align="center">
   <a href="https://github.com/vocaela/kv-ground"><img src="https://img.shields.io/badge/GitHub-Repository-green?logo=github" alt="GitHub"></a>
-  <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl"><img src="https://img.shields.io/badge/Hugging%20Face-Model-orange?logo=huggingface" alt="Hugging Face"></a>
+  <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5"><img src="https://img.shields.io/badge/Hugging%20Face-4B--BaseGuiOwl1.5-orange?logo=huggingface" alt="KV-Ground-4B-BaseGuiOwl1.5"></a>
+  <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl"><img src="https://img.shields.io/badge/Hugging%20Face-4B--BaseQw3vl-orange?logo=huggingface" alt="KV-Ground-4B-BaseQw3vl"></a>
 </p>
 <p align="center">
   <em>
@@ -17,7 +18,7 @@
 </p>
 
 
-High-resolution GUI grounding is an extreme important task for professional workforce scenarios like desktop RPA, where the massive usage also implies the favoring of compact models. High-resolution GUI grounding remains challenging to VLMs. The recent progress on ScreenSpot-Pro are mostly from reasoning CoT and agentic framework on top of models, which trade-in significant extra computing time / integration complexity for the quality boost. For pure instruct model, the improvement highly correlates to model size scaling up. However, we argue that grounding as a very fundamental atomic capability needs intrinsic improvement. High-resolution grounding is challenging to VLMs largely due to two reasons: (1) Vision-encoders were pre-trained on images of very low resolution. (2) Lack of high-quality high-resolution annotated data. We belive that even the top-tier VLMs are under-trained on high-resolution grounding data. To address this problem, we synthesize high-quality high-resolution GUI grounding data, and continue post-training Qwen3-VL-4B-Instruct and GUI-Owl-1.5-4B-Instruct with SFT followed by RFT (GRPO). Without reasoning CoT, KV-Ground-4B-BaseQw3vl and KV-Ground-4B-BaseGuiOwl1.5 achieve 63.2 / 66.5 on ScreenSpot-Pro, ranked into the best models at 4B range. Meanwhile, they maintains excellent performance on regular-resolution tasks with 94.6 / 94.3  on ScreenSpot-V2.
+High-resolution GUI grounding is an extreme important task for professional workforce scenarios like desktop RPA, where the massive usage also implies the favoring of compact models. High-resolution GUI grounding remains challenging to VLMs. The recent progress on ScreenSpot-Pro are mostly from reasoning CoT and agentic framework on top of models, which trade-in significant extra computing time / integration complexity for the quality boost. For pure instruct model, the improvement highly correlates to model size scaling up. However, we argue that grounding as a very fundamental atomic capability needs intrinsic improvement. High-resolution grounding is challenging to VLMs largely due to two reasons: (1) Vision-encoders were pre-trained on images of very low resolution. (2) Lack of high-quality high-resolution annotated data. We belive that even the top-tier VLMs are under-trained on high-resolution grounding data. To address this problem, we synthesize high-quality high-resolution GUI grounding data, and continue post-training Qwen3-VL-4B-Instruct and GUI-Owl-1.5-4B-Instruct with SFT followed by RFT (GRPO). Without reasoning CoT, [KV-Ground-4B-BaseQw3vl](https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl) and [KV-Ground-4B-BaseGuiOwl1.5](https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5) achieve 63.2 / 66.5 on ScreenSpot-Pro, ranked into the best models at 4B range. Meanwhile, they maintains excellent performance on regular-resolution tasks with 94.6 / 94.3  on ScreenSpot-V2.
 
 ---
 
