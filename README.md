@@ -27,7 +27,7 @@ High-resolution GUI grounding is an extreme important task for professional work
 
 - Impact of continue post-training on base models
 
-  For the purpose of controlled comparison, all these numbers are re-/produced by us, using the exact evaluation code in this repo. The baseline numbers may be different from the sources. Please see below `Note` section for the controlled setup.
+  For the purpose of controlled comparison, all these numbers are re-/produced by us, using the exact evaluation code in this repo. The baseline numbers may be different from the sources. Please see below `note` section for the controlled setup.
 
   | Models                          | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G    | OSWorld-G-refined | UI-Vision   |
   |---------------------------------|:--------------:|:-------------:|:------------:|:-----------------:|:-----------:|
@@ -37,14 +37,14 @@ High-resolution GUI grounding is an extreme important task for professional work
   | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5 (+1.2)    | 94.3 (+1.5)   | 56.9 (+1.6)  | 62.8 (+2.4)       | 32.2 (+1.8) |
   
   The results tell us:
-  - Our continuous post-training method brings in consistent improvements, even on the latest very strong GUI-Owl-1.5-4B-Instruct model.
+  - Our continuous post-training method brings in consistent improvements, even on the latest strong GUI-Owl-1.5-4B-Instruct model.
   - The high-resolution optimized training doesn't harm regular resolution tasks
   
   Especially, it is beyond our expectation on the improvement over GUI-Owl-1.5-4B-Instruct because the technical report of GUI-Owl-1.5-4B-Instruct discloses that they have already applied extensive data synthesize / augementation targeted for high-resolution images.
 
 - Comparision with top models under 8B (ranked by ScreenSpot-Pro)
   
-  We take all the top models under 8B from [ScreenSpot-Pro leaderboard](https://gui-agent.github.io/grounding-leaderboard/) and related most recent technical reports.
+  We consider the top models under 8B from [ScreenSpot-Pro leaderboard](https://gui-agent.github.io/grounding-leaderboard/) and related most recent technical reports.
 
   | Models                          | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G | OSWorld-G-refined | UI-Vision  |
   |---------------------------------|:--------------:|:-------------:|:---------:|:-----------------:|:----------:|
