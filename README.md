@@ -52,7 +52,7 @@ High-resolution GUI grounding is an extreme important task for professional work
   | UI-Venus-1.5-8B                 | 68.4  | 93.2  | 69.4   | -     | -     |
   | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5  | 94.3  | 62.8   | 69.1  | 32.2  |
   | MAI-UI-8B                       | 65.8  | 95.2  | 60.1   | 68.6  | 40.7  |
-  | GUI-Owl-1.5-4B-Instruct*        | 65.3  | 92.8  | 55.3   | 60.4  | 30.4  |
+  | GUI-Owl-1.5-4B-Instruct*        | 65.3  | 92.8  | 61.7   | 66.8  | 30.4  |
   | **KV-Ground-4B-BaseQw3vl***     | 63.2  | 94.6  | 64.0   | 71.2  | 32.6  |
   | Step-GUI-8B                     | 62.6  | 95.1  | 70.0   | -     | -     |
   | Step-GUI-4B                     | 60.0  | 93.6  | 66.9   | -     | -     |
