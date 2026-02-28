@@ -40,6 +40,7 @@ def eval(
     max_new_tokens: int = 256,
     sort_key: str = None,
     resume_from_dir: str = None,
+    resume_on: bool = False
 ) -> List[Dict[str, Any]]:
     logger = logging.getLogger(__name__)
     logger.info(f"Distributed setup: rank={rank}, world_size={world_size}, local_rank={local_rank}")
@@ -62,7 +63,7 @@ def eval(
     # And it assumes id field in the example!
     local_rank_result_file_name = f"rank_{rank}_results.jsonl"
     local_rank_result_file = os.path.join(output_dir, local_rank_result_file_name)
-    if resume_from_dir is not None:
+    if resume_on and resume_from_dir is not None:
         # copy the local rank result file from the resume_from_dir to output_dir for resuming
         # note that each rank only copy its own local result file to avoid redundant copying and possible
         resume_rank_result_file = os.path.join(resume_from_dir, local_rank_result_file_name)
@@ -71,7 +72,7 @@ def eval(
 
     local_results = []
     already_run_ids = set()
-    if os.path.exists(local_rank_result_file):
+    if resume_on and os.path.exists(local_rank_result_file):
         logger.warning(f"Local result file {local_rank_result_file} already exists. Will load and skip them...")
         with open(local_rank_result_file, 'r', encoding='utf-8') as fi:
             for line in fi:
@@ -132,7 +133,8 @@ def eval(
     
     n_skipped = 0
     n_total = 0
-    with open(local_rank_result_file, 'a', encoding='utf-8') as fo:
+    write_mode = 'a' if resume_on else 'w'
+    with open(local_rank_result_file, write_mode, encoding='utf-8') as fo:
         for batch in dataloader:
             for example in batch:
                 id = example['id']

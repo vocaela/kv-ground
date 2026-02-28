@@ -175,6 +175,7 @@ class BaseLazyDataset(Dataset):
         example['image_size'] = image_size
         return example
 
+
 # extract as pixel coordinates
 def extract_coordinates(assistant_message_text: str, image_width: int, image_height: int) -> Tuple[int, int]:
     start = assistant_message_text.index("<tool_call>") + len("<tool_call>")
@@ -244,4 +245,14 @@ def is_point_in_polygon(point, polygon):
         j = i
 
     return inside
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() == 'true':
+        return True
+    elif v.lower() == 'false':
+        return False
+    else:
+        raise ValueError('Boolean value expected.')
 

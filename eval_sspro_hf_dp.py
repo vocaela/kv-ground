@@ -5,7 +5,7 @@ import logging
 from sspro_report import sspro_evaluate as evaluate
 from torch_dist_utils import setup_torch_distributed, setup_rank_logger, cleanup_torch_distributed
 from hf_dp_eval import eval
-from utils import BaseLazyDataset, QWEN3VL_GROUNDING_SYSTEM_MESSAGE_TEXT as SYSTEM_MESSAGE_TEXT
+from utils import BaseLazyDataset, QWEN3VL_GROUNDING_SYSTEM_MESSAGE_TEXT as SYSTEM_MESSAGE_TEXT, str2bool
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,7 @@ def main():
     # common args
     parser.add_argument('--output_dir', type=str, default=".", help='The output directory to save the evaluation results')
     parser.add_argument('--resume_from_dir', type=str, default=None, help='The directory to resume the evaluation from, if any')
+    parser.add_argument('--resume_on', type=str2bool, default=False, help='Whether to turn-on the auto resume mode to automatically resume from the last interrupted run.')
     parser.add_argument('--model_dir', type=str, help='The path to the model checkpoint')
     parser.add_argument('--data_dir', type=str, help='The dir of the original official dataset downloaded from https://huggingface.co/datasets/likaixin/ScreenSpot-Pro/tree/main')
     parser.add_argument('--sampling_rate', type=float, default=1.0, help='The sampling rate for the dataset, set to a value in (0, 1] to only use a portion of the dataset for debugging')
@@ -82,7 +83,8 @@ def main():
         top_k=args.top_k,
         max_new_tokens=args.max_new_tokens,
         sort_key=args.sort_key,
-        resume_from_dir=args.resume_from_dir
+        resume_from_dir=args.resume_from_dir,
+        resume_on=args.resume_on
     )
     
     del dataset

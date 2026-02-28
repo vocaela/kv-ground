@@ -31,10 +31,10 @@ High-resolution GUI grounding is an extreme important task for professional work
 
   | Models                          | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G    | OSWorld-G-refined | UI-Vision   |
   |---------------------------------|:--------------:|:-------------:|:------------:|:-----------------:|:-----------:|
-  | Base: Qwen3-VL-4B-Instruct*     | 59.5           | 93.1          | 55.3         | 60.4              | 30.4        |
-  | **KV-Ground-4B-BaseQw3vl***     | 63.2 (+3.7)    | 94.6 (+1.5)   | 58.2 (+2.9)  | 64.5 (+3.9)       | 32.6 (+2.2) |
-  | Base: GUI-Owl-1.5-4B-Instruct*  | 65.3           | 92.8          | 55.3         | 60.4              | 30.4        |
-  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5 (+1.2)    | 94.3 (+1.5)   | 56.9 (+1.6)  | 62.8 (+2.4)       | 32.2 (+1.8) |
+  | Base: Qwen3-VL-4B-Instruct*     | 59.5           | 93.1          | 63.3         | 71.1              | 30.4        |
+  | **KV-Ground-4B-BaseQw3vl***     | 63.2 (+3.7)    | 94.6 (+1.5)   | 64.0 (0.7)   | 71.2 (+0.1)       | 32.6 (+2.2) |
+  | Base: GUI-Owl-1.5-4B-Instruct*  | 65.3           | 92.8          | 61.7         | 66.8              | 30.4        |
+  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5 (+1.2)    | 94.3 (+1.5)   | 62.8 (+1.1)  | 69.1 (+2.3)       | 32.2 (+1.8) |
   
   The results tell us:
   - Our continuous post-training method brings in consistent improvements, even on the latest strong GUI-Owl-1.5-4B-Instruct model.
@@ -50,10 +50,10 @@ High-resolution GUI grounding is an extreme important task for professional work
   |---------------------------------|:--------------:|:-------------:|:---------:|:-----------------:|:----------:|
   | *Specialized GUI Models*
   | UI-Venus-1.5-8B                 | 68.4  | 93.2  | 69.4   | -     | -     |
-  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5  | 94.3  | 56.9   | 62.8  | 32.2  |
+  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5  | 94.3  | 62.8   | 69.1  | 32.2  |
   | MAI-UI-8B                       | 65.8  | 95.2  | 60.1   | 68.6  | 40.7  |
   | GUI-Owl-1.5-4B-Instruct*        | 65.3  | 92.8  | 55.3   | 60.4  | 30.4  |
-  | **KV-Ground-4B-BaseQw3vl***     | 63.2  | 94.6  | 58.2   | 64.5  | 32.6  |
+  | **KV-Ground-4B-BaseQw3vl***     | 63.2  | 94.6  | 64.0   | 71.2  | 32.6  |
   | Step-GUI-8B                     | 62.6  | 95.1  | 70.0   | -     | -     |
   | Step-GUI-4B                     | 60.0  | 93.6  | 66.9   | -     | -     |
   | Holo2-8B                        | 58.9  | 93.2  | 70.1   | -     | -     |
@@ -64,7 +64,7 @@ High-resolution GUI grounding is an extreme important task for professional work
   | GTA1-7B                         | 50.1  | 92.4  | 60.1   | 67.7  | -     |
   | UI-TARS-1.5-7B                  | 35.7  | 91.6  | 52.8   | 64.2  | -     |
   | *General VLMs*
-  | Qwen3-VL-4B*                    | 59.5  | 93.1  |  55.3  | 60.4  | 30.4  |
+  | Qwen3-VL-4B*                    | 59.5  | 93.1  | 63.3   | 71.1  | 30.4  |
   | Qwen3-VL-8B                     | 54.6  | -     | 58.2   | -     | -     | 
   
 > Notes:

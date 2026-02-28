@@ -2,7 +2,6 @@
 
 import itertools
 
-
 def judge_correctness(results):
     for example in results:
         pred = example['pred']
@@ -187,6 +186,7 @@ def sspro_evaluate(results):
         "details": results
     }
     return result_report
+
 
 def ssv2_evaluate(results):
     ssv2_judge_correctness(results)
