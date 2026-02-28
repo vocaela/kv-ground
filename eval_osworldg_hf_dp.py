@@ -5,7 +5,7 @@ import logging
 from osworldg_report import evaluate
 from torch_dist_utils import setup_torch_distributed, setup_rank_logger, cleanup_torch_distributed
 from hf_dp_eval import eval
-from utils import BaseLazyDataset, QWEN3VL_GROUNDING_W_REFUSAL_SYSTEM_MESSAGE_TEXT as SYSTEM_MESSAGE_TEXT
+from utils import BaseLazyDataset, QWEN3VL_GROUNDING_W_REFUSAL_SYSTEM_MESSAGE_TEXT as SYSTEM_MESSAGE_TEXT, str2bool
 
 logger = logging.getLogger(__name__)
 
@@ -31,15 +31,6 @@ class OSWorldGHFLazyDataset(BaseLazyDataset):
     #     super()._prepare_example(example)
     
 
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() == 'true':
-        return True
-    elif v.lower() == 'false':
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
     
 def main():
     # parse arguments
@@ -47,6 +38,7 @@ def main():
     # common args
     parser.add_argument('--output_dir', type=str, default=".", help='The output directory to save the evaluation results')
     parser.add_argument('--resume_from_dir', type=str, default=None, help='The directory to resume the evaluation from, if any')
+    parser.add_argument('--resume_on', type=str2bool, default=False, help='Whether to turn-on the auto resume mode to automatically resume from the last interrupted run.')
     
     parser.add_argument('--model_dir', type=str, help='The path to the model checkpoint')
     parser.add_argument('--data_dir', type=str, help='The dir of the original official dataset downloaded from https://github.com/xlang-ai/OSWorld-G/tree/main/benchmark')
@@ -95,7 +87,8 @@ def main():
         top_k=args.top_k,
         max_new_tokens=args.max_new_tokens,
         sort_key=args.sort_key,
-        resume_from_dir=args.resume_from_dir
+        resume_from_dir=args.resume_from_dir,
+        resume_on=args.resume_on
     )
 
     del dataset

@@ -2,6 +2,20 @@
 
 import itertools
 
+def zoomin_pred_map(results):
+    # map the zoomin predict result back to the point in the original image
+    for example in results:
+        pred = example['pred']
+        if pred is None:
+            continue
+        x, y = pred
+        crop_x1, crop_y1, crop_x2, crop_y2 = example['crop_bbox'] # (x1, y1, x2, y2)
+        pred = (crop_x1 + x, crop_y1 + y)
+        example['pred'] = pred
+        # update back the image size info
+        example['crop_image_size'] = example['image_size']
+        example['image_size'] = example['orig_image_size']
+
 
 def judge_correctness(results):
     for example in results:
@@ -188,6 +202,7 @@ def sspro_evaluate(results):
     }
     return result_report
 
+
 def ssv2_evaluate(results):
     ssv2_judge_correctness(results)
     leaderboard_simple_style = ssv2_evaluate_leaderboard_simple_style(results)
@@ -201,3 +216,8 @@ def ssv2_evaluate(results):
         "details": results
     }
     return result_report
+
+
+def sspro_zoomin_evaluate(results):
+    zoomin_pred_map(results)
+    return sspro_evaluate(results)

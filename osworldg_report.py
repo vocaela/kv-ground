@@ -23,9 +23,13 @@ def evaluate(results):
     n_wrong_format = 0
     for example in results:
         pred = example['pred']
-        box_coordinates = example['box_coordinates'] # note: osworld-g uses (x, y, w, h) format for box_coordinates, need to convert to (x1, y1, x2, y2) format for the judge_correctness function
-        box_coordinates[2:] = [box_coordinates[0] + box_coordinates[2], box_coordinates[1] + box_coordinates[3]] # convert (x, y, w, h) to (x1, y1, x2, y2)
+        box_coordinates = example['box_coordinates']
         boxes_type = example['box_type']
+        if boxes_type == "bbox":
+            assert len(box_coordinates) == 4, f"bbox box_coordinates should have 4 values (x, y, w, h), but got {len(box_coordinates)} values: {box_coordinates}"
+            # note: when 'bbox' cases, osworld-g uses (x, y, w, h) format for box_coordinates, need to convert to (x1, y1, x2, y2) format for the judge_correctness function. This only needs to be done for 'bbox' cases, not for 'polygon' cases.
+            box_coordinates[2:] = [box_coordinates[0] + box_coordinates[2], box_coordinates[1] + box_coordinates[3]] # convert (x, y, w, h) to (x1, y1, x2, y2)
+        
         if pred is None:
             example['correctness'] = "wrong_format"
             n_wrong_format += 1
