@@ -1,4 +1,4 @@
-# KV-Ground-4B-BaseQw3vl, KV-Ground-4B-BaseGuiOwl1.5, or Qwen3-VL-4B local path
+# KV-Ground-4B-BaseQw3vl, KV-Ground-4B-BaseGuiOwl1.5-0228, or Qwen3-VL-4B-Instruct local path
 MODEL_DIR="/path/to/model"
 OUTPUT_DIR="/path/to/output"
 
