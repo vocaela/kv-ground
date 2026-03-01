@@ -15,14 +15,16 @@ logger = logging.getLogger(__name__)
 
 class SsproZoomInHFLazyDataset(BaseZoomInLazyDataset):
     def __init__(self, 
-                 data_dir,
-                 predict_result_file: str,
-                 sampling_rate: float = 1.0,
-                 crop_size_ratio: float = 0.5, # the ratio of the cropped sub image size to the original image size, e.g., 0.5 means the cropped sub image will be 1/4 of the original image
+                data_dir,
+                predict_result_file: str,
+                sampling_rate: float = 1.0,
+                crop_size_ratio: float = 0.5, # the ratio of the cropped sub image size to the original image size, e.g., 0.5 means the cropped sub image will be 1/4 of the original image
+                resize_to_origin: bool = True, # whether to resize the cropped sub image back to the original image size
         ):
         super().__init__(
             predict_result_file=predict_result_file,
             crop_size_ratio=crop_size_ratio,
+            resize_to_origin=resize_to_origin,
             # base args
             data_dir=data_dir,
             annotation_files_glob_pattern="annotations/*.json",
@@ -52,6 +54,8 @@ def main():
     parser.add_argument('--step1_output_dir', type=str, default=None, help='The output dir of the 1st step evaluation, assume report.json there')
     parser.add_argument('--sampling_rate', type=float, default=1.0, help='The sampling rate for the dataset, set to a value in (0, 1] to only use a portion of the dataset for debugging')
     parser.add_argument('--crop_size_ratio', type=float, default=0.5, help='The ratio of the cropped sub image size to the original image size, e.g., 0.5 means the cropped sub image will be 1/4 of the original image')
+    parser.add_argument('--resize_to_origin', type=str2bool, default=True, help='Whether to resize the cropped sub image back to the original image size.')
+
     parser.add_argument('--num_workers', type=int, default=4, help='Number of data loading workers')
     parser.add_argument('--sort_key', type=str, default=None, help='The key to sort the results before saving the report. Default None without sorting.')
     # model param
@@ -74,12 +78,12 @@ def main():
 
     logger.info(f"args: {args}")
 
-    if not args.step1_report_file:
-        raise ValueError("The --step1_report_file argument must be provided, which is the report file of the 1st step prediction results, used for cropping the sub images for the 2nd step evaluation.")
+    if not (args.step1_output_dir and os.path.exists(args.step1_output_dir)):
+        raise ValueError("The --step1_output_dir argument must be provided and must exist, which is the output directory of the 1st step evaluation")
     
     # load dataset
     step1_report_file = os.path.join(args.step1_output_dir, "report.json")
-    dataset = SsproZoomInHFLazyDataset(args.data_dir, sampling_rate=args.sampling_rate, crop_size_ratio=args.crop_size_ratio, predict_result_file=step1_report_file)
+    dataset = SsproZoomInHFLazyDataset(args.data_dir, sampling_rate=args.sampling_rate, crop_size_ratio=args.crop_size_ratio, resize_to_origin=args.resize_to_origin, predict_result_file=step1_report_file)
     eval(
         rank=rank,
         world_size=world_size,

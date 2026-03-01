@@ -181,10 +181,11 @@ class BaseLazyDataset(Dataset):
 # This step will take the pred point, crop the local area sub image, and save the sub images in a folder, and update the annotation with the new sub image path, this produces a new dataset ready for running the 2nd round inference and evaluation
 class BaseZoomInLazyDataset(BaseLazyDataset):
     # predict_result_file is the result of 1st round evaluation run, it keeps the prediction point of each example.
-    def __init__(self, predict_result_file: str, crop_size_ratio: float, *args, **kwargs):
+    def __init__(self, predict_result_file: str, crop_size_ratio: float, resize_to_origin: bool = True, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.predict_result_file = predict_result_file
         self.crop_size_ratio = crop_size_ratio
+        self.resize_to_origin = resize_to_origin
         self.id_to_predict = None
         assert self.image_format == 'pil_object', f"Zoom-in evaluation only supports the image format to be pil_object, current image format: {self.image_format}"
 
@@ -205,6 +206,7 @@ class BaseZoomInLazyDataset(BaseLazyDataset):
             return super_example # cannot do anythin if the 1st round prediction has no result at all
         
         super_example['step1_pred'] = pred # save the 1st round prediction in the example for later use in evaluation
+        super_example['pred'] = None # reset the pred field for the 2nd round prediction
         x, y = pred
         # validate the predicted point is within the image
         image_width, image_height = super_example['image_size']
@@ -220,7 +222,15 @@ class BaseZoomInLazyDataset(BaseLazyDataset):
         lower = min(image_height, y + sub_image_height // 2)
         super_example['crop_bbox'] = (left, upper, right, lower) # save the cropped bbox coordinates in the original image info for evaluation use
         super_example['orig_image_size'] = [image_width, image_height] # save the original image size for evaluation use
-        super_example['image_size'] = [right - left, lower - upper] # update the image size to the cropped sub image size for evaluation use
+        crop_width = right - left
+        crop_height = lower - upper
+
+        if self.resize_to_origin:
+            # resize the cropped sub image to the original image size for evaluation use
+            super_example['crop_image_size_before_resize'] = [crop_width, crop_height]
+            super_example['image_size'] = [image_width, image_height]
+        else:
+            super_example['image_size'] = [crop_width, crop_height] # update the image size to the cropped sub image size for evaluation use
         # find the image object in the messages and crop it, then replace the image object in the messages with the cropped sub-image
         messages = super_example['messages']
         found_image = False
@@ -233,6 +243,8 @@ class BaseZoomInLazyDataset(BaseLazyDataset):
                         found_image = True
                         image = content_item['image']
                         sub_image = image.crop((left, upper, right, lower))
+                        if self.resize_to_origin:
+                            sub_image = sub_image.resize((image_width, image_height))
                         content_item['image'] = sub_image
                     
         return super_example # if cannot find the image item in the messages, just return the original example without modification

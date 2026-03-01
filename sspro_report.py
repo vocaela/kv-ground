@@ -9,9 +9,19 @@ def zoomin_pred_map(results):
         pred = example['pred']
         if pred is None:
             continue
+
+        if 'crop_bbox' not in example:
+            continue
+        
         x, y = pred
+        # scale to the cropped sub image coordinate if the pred is in ratio format
+        crop_resized_width, crop_resized_height = example['image_size']
+        rel_x, rel_y = x / crop_resized_width, y / crop_resized_height
+
         crop_x1, crop_y1, crop_x2, crop_y2 = example['crop_bbox'] # (x1, y1, x2, y2)
-        pred = (crop_x1 + x, crop_y1 + y)
+        crop_orig_width, crop_orig_height = crop_x2 - crop_x1, crop_y2 - crop_y1
+
+        pred = (round(crop_x1 + rel_x * crop_orig_width), round(crop_y1 + rel_y * crop_orig_height))
         example['pred'] = pred
         # update back the image size info
         example['crop_image_size'] = example['image_size']
