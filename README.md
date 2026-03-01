@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.com/vocaela/kv-ground"><img src="https://img.shields.io/badge/GitHub-Repository-green?logo=github" alt="GitHub"></a>
-  <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5"><img src="https://img.shields.io/badge/Hugging%20Face-4B--BaseGuiOwl1.5-orange?logo=huggingface" alt="KV-Ground-4B-BaseGuiOwl1.5"></a>
+  <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5-0228"><img src="https://img.shields.io/badge/Hugging%20Face-4B--BaseGuiOwl1.5--0228-orange?logo=huggingface" alt="KV-Ground-4B-BaseGuiOwl1.5-0228"></a>
   <a href="https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl"><img src="https://img.shields.io/badge/Hugging%20Face-4B--BaseQw3vl-orange?logo=huggingface" alt="KV-Ground-4B-BaseQw3vl"></a>
 </p>
 <p align="center">
@@ -18,7 +18,7 @@
 </p>
 
 
-High-resolution GUI grounding is an extreme important task for professional workforce scenarios like desktop RPA, where the massive usage also implies the favoring of compact models. High-resolution GUI grounding remains challenging to VLMs. The recent progress on ScreenSpot-Pro are mostly from reasoning CoT and agentic framework on top of models, which trade-in significant extra computing time / integration complexity for the quality boost. For pure instruct model, the improvement highly correlates to model size scaling up. However, we argue that grounding as a very fundamental atomic capability needs intrinsic improvement. High-resolution grounding is challenging to VLMs largely due to two reasons: (1) Vision-encoders were pre-trained on images of very low resolution. (2) Lack of high-quality high-resolution annotated data. We belive that even the top-tier VLMs are under-trained on high-resolution grounding data. To address this problem, we synthesize high-quality high-resolution GUI grounding data, and continue post-training Qwen3-VL-4B-Instruct and GUI-Owl-1.5-4B-Instruct with SFT followed by RFT (GRPO). Without reasoning CoT, [KV-Ground-4B-BaseQw3vl](https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl) and [KV-Ground-4B-BaseGuiOwl1.5](https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5) achieve 63.2 / 66.5 on ScreenSpot-Pro, ranked into the best models at 4B range. Meanwhile, they maintains excellent performance on regular-resolution tasks with 94.6 / 94.3  on ScreenSpot-V2.
+High-resolution GUI grounding is an extreme important task for professional workforce scenarios like desktop RPA, where the massive usage also implies the favoring of compact models. High-resolution GUI grounding remains challenging to VLMs. The recent progress on ScreenSpot-Pro are mostly from reasoning CoT and agentic framework on top of models, which trade-in significant extra computing time / integration complexity for the quality boost. For pure instruct model, the improvement highly correlates to model size scaling up. However, we argue that grounding as a very fundamental atomic capability needs intrinsic improvement. High-resolution grounding is challenging to VLMs largely due to two reasons: (1) Vision-encoders were pre-trained on images of very low resolution. (2) Lack of high-quality high-resolution annotated data. We belive that even the top-tier VLMs are under-trained on high-resolution grounding data. To address this problem, we synthesize high-quality high-resolution GUI grounding data, and continue post-training Qwen3-VL-4B-Instruct and GUI-Owl-1.5-4B-Instruct with SFT followed by RFT (GRPO). Without reasoning CoT, [KV-Ground-4B-BaseQw3vl](https://huggingface.co/vocaela/KV-Ground-4B-BaseQw3vl) and [KV-Ground-4B-BaseGuiOwl1.5-0228](https://huggingface.co/vocaela/KV-Ground-4B-BaseGuiOwl1.5-0228) achieve 63.2 / 67.0 on ScreenSpot-Pro, ranked into the best models at 4B range. Meanwhile, they maintains excellent performance on regular-resolution tasks with 94.6 / 94.1  on ScreenSpot-V2.
 
 ---
 
@@ -29,12 +29,12 @@ High-resolution GUI grounding is an extreme important task for professional work
 
   For the purpose of controlled comparison, all these numbers are re-/produced by us, using the exact evaluation code in this repo. The baseline numbers may be different from the sources. Please see below `note` section for the controlled setup.
 
-  | Models                          | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G    | OSWorld-G-refined | UI-Vision   |
-  |---------------------------------|:--------------:|:-------------:|:------------:|:-----------------:|:-----------:|
-  | Base: Qwen3-VL-4B-Instruct*     | 59.5           | 93.1          | 63.3         | 71.1              | 30.4        |
-  | **KV-Ground-4B-BaseQw3vl***     | 63.2 (+3.7)    | 94.6 (+1.5)   | 64.0 (0.7)   | 71.2 (+0.1)       | 32.6 (+2.2) |
-  | Base: GUI-Owl-1.5-4B-Instruct*  | 65.3           | 92.8          | 61.7         | 66.8              | 30.4        |
-  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5 (+1.2)    | 94.3 (+1.5)   | 62.8 (+1.1)  | 69.1 (+2.3)       | 32.2 (+1.8) |
+  | Models                               | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G    | OSWorld-G-refined | UI-Vision   |
+  |--------------------------------------|:--------------:|:-------------:|:------------:|:-----------------:|:-----------:|
+  | Base: Qwen3-VL-4B-Instruct*          | 59.5           | 93.1          | 63.3         | 71.1              | 30.4        |
+  | **KV-Ground-4B-BaseQw3vl***          | 63.2 (+3.7)    | 94.6 (+1.5)   | 64.0 (0.7)   | 71.2 (+0.1)       | 32.6 (+2.2) |
+  | Base: GUI-Owl-1.5-4B-Instruct*       | 65.3           | 92.8          | 61.7         | 66.8              | 30.4        |
+  | **KV-Ground-4B-BaseGuiOwl1.5-0228*** | 67.0 (+1.7)    | 94.1 (+1.3)   | 64.2 (+2.5)  | 69.5 (+2.7)       | 33.3 (+2.9) |
   
   The results tell us:
   - Our continuous post-training method brings in consistent improvements, even on the latest strong GUI-Owl-1.5-4B-Instruct model.
@@ -50,7 +50,7 @@ High-resolution GUI grounding is an extreme important task for professional work
   |---------------------------------|:--------------:|:-------------:|:---------:|:-----------------:|:----------:|
   | *Specialized GUI Models*
   | UI-Venus-1.5-8B                 | 68.4  | 93.2  | 69.4   | -     | -     |
-  | **KV-Ground-4B-BaseGuiOwl1.5*** | 66.5  | 94.3  | 62.8   | 69.1  | 32.2  |
+  | **KV-Ground-4B-BaseGuiOwl1.5-0228*** | 67.0  | 94.1  | 64.2   | 69.5  | 33.3  |
   | MAI-UI-8B                       | 65.8  | 95.2  | 60.1   | 68.6  | 40.7  |
   | GUI-Owl-1.5-4B-Instruct*        | 65.3  | 92.8  | 61.7   | 66.8  | 30.4  |
   | **KV-Ground-4B-BaseQw3vl***     | 63.2  | 94.6  | 64.0   | 71.2  | 32.6  |
