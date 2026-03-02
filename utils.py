@@ -176,6 +176,80 @@ class BaseLazyDataset(Dataset):
         return example
 
 
+# This is a batch mode way of doing zoom-in evaluation for convenience:
+# Assume inference results already got in the 1st round run
+# This step will take the pred point, crop the local area sub image, and save the sub images in a folder, and update the annotation with the new sub image path, this produces a new dataset ready for running the 2nd round inference and evaluation
+class BaseZoomInLazyDataset(BaseLazyDataset):
+    # predict_result_file is the result of 1st round evaluation run, it keeps the prediction point of each example.
+    def __init__(self, predict_result_file: str, crop_size_ratio: float, resize_to_origin: bool = True, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.predict_result_file = predict_result_file
+        self.crop_size_ratio = crop_size_ratio
+        self.resize_to_origin = resize_to_origin
+        self.id_to_predict = None
+        assert self.image_format == 'pil_object', f"Zoom-in evaluation only supports the image format to be pil_object, current image format: {self.image_format}"
+
+    def _lazy_init(self):
+        super()._lazy_init()
+        with open(self.predict_result_file, 'r') as f:
+            predict_results = json.load(f)
+
+        details = predict_results["details"]
+        self.id_to_predict = {item['id']: item['pred'] for item in details}
+        logger.info(f"Loaded predict results for {len(self.id_to_predict)} examples from {self.predict_result_file}")
+
+    def __getitem__(self, idx):
+        super_example = super().__getitem__(idx)
+        example_id = super_example['id']
+        pred = self.id_to_predict.get(example_id, None)
+        if pred is None:
+            return super_example # cannot do anythin if the 1st round prediction has no result at all
+        
+        super_example['step1_pred'] = pred # save the 1st round prediction in the example for later use in evaluation
+        super_example['pred'] = None # reset the pred field for the 2nd round prediction
+        x, y = pred
+        # validate the predicted point is within the image
+        image_width, image_height = super_example['image_size']
+        if not (0 <= x < image_width and 0 <= y < image_height):
+            return super_example # cannot do anything if the predicted point is out of image
+        
+        # crop the local area around the predicted point as the new image for zoom-in evaluation
+        sub_image_width = int(image_width * self.crop_size_ratio)
+        sub_image_height = int(image_height * self.crop_size_ratio)
+        left = max(0, x - sub_image_width // 2)
+        upper = max(0, y - sub_image_height // 2)
+        right = min(image_width, x + sub_image_width // 2)
+        lower = min(image_height, y + sub_image_height // 2)
+        super_example['crop_bbox'] = (left, upper, right, lower) # save the cropped bbox coordinates in the original image info for evaluation use
+        super_example['orig_image_size'] = [image_width, image_height] # save the original image size for evaluation use
+        crop_width = right - left
+        crop_height = lower - upper
+
+        if self.resize_to_origin:
+            # resize the cropped sub image to the original image size for evaluation use
+            super_example['crop_image_size_before_resize'] = [crop_width, crop_height]
+            super_example['image_size'] = [image_width, image_height]
+        else:
+            super_example['image_size'] = [crop_width, crop_height] # update the image size to the cropped sub image size for evaluation use
+        # find the image object in the messages and crop it, then replace the image object in the messages with the cropped sub-image
+        messages = super_example['messages']
+        found_image = False
+        for message in messages:
+            if message['role'] == 'user':
+                for content_item in message['content']:
+                    if content_item['type'] == 'image':
+                        if found_image:
+                            raise ValueError(f"Found multiple image items in the user message, which is not expected. Example id: {example_id}, messages: {messages}")
+                        found_image = True
+                        image = content_item['image']
+                        sub_image = image.crop((left, upper, right, lower))
+                        if self.resize_to_origin:
+                            sub_image = sub_image.resize((image_width, image_height))
+                        content_item['image'] = sub_image
+                    
+        return super_example # if cannot find the image item in the messages, just return the original example without modification
+
+
 # extract as pixel coordinates
 def extract_coordinates(assistant_message_text: str, image_width: int, image_height: int) -> Tuple[int, int]:
     start = assistant_message_text.index("<tool_call>") + len("<tool_call>")
