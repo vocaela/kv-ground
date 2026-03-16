@@ -1,5 +1,5 @@
 # Local path for
-# KV-Ground-4B-BaseQw3vl, KV-Ground-4B-BaseGuiOwl1.5-0228, KV-Ground-8B-BaseGuiOwl1.5, Gui-Owl-1.5-4B-Instruct, Gui-Owl-1.5-8B-Instruct, Qwen3-VL-4B-Instruct, Qwen3-VL-8B-Instruct
+# KV-Ground-4B-BaseQw3vl, KV-Ground-4B-BaseGuiOwl1.5-0228, KV-Ground-8B-BaseGuiOwl1.5-0315, Gui-Owl-1.5-4B-Instruct, Gui-Owl-1.5-8B-Instruct, Qwen3-VL-4B-Instruct, Qwen3-VL-8B-Instruct
 MODEL_DIR="/path/to/model"
 
 # output paths
