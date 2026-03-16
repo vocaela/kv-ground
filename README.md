@@ -78,7 +78,7 @@ While optimized for high-resolution images, they maintains excellent performance
   | Models                               | ScreenSpot-Pro | ScreenSpot-V2 | OSWorld-G | OSWorld-G-refined | UI-Vision  |
   |--------------------------------------|:--------------:|:-------------:|:---------:|:-----------------:|:----------:|
   | *Specialized GUI Models*
-  | **KV-Ground-8B-BaseGuiOwl1.5-0315***      | 72.0      | 93.8  | 67.7   | 71.1  | 39.0  |
+  | **KV-Ground-8B-BaseGuiOwl1.5-0315*** | 72.9      | 94.2  | 67.9   | 70.7  | 39.5  |
   | GUI-Owl-1.5-32B-Instruct*            | 71.3      | 95.1  | 67.0   | 71.8  | 37.5  |
   | Holo2-235B-A22B                      | 70.6      | 95.9  | 79.0   | -     | -     |
   | GUI-Owl-1.5-8B-Instruct*             | 70.5      | 93.5  | 64.7   | 67.9  | 38.3  |
